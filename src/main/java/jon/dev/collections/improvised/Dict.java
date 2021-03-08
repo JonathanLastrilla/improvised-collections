@@ -8,8 +8,10 @@ import java.util.List;
 import java.util.function.Consumer;
 
 /**
- *
+ * Inspired by dict collection from python language. This attempts to provide
+ * shorthand functions for ease in use.
  * @author Jonathan Lastrilla
+ * @since 0.1
  */
 public abstract class Dict {
 
@@ -89,7 +91,7 @@ public abstract class Dict {
 
         @Override
         protected Object getValue() {
-            throw new UnsupportedOperationException("unable to get individual value from parent node " + getName());
+            throw new UnsupportedOperationException(String.format("unable to get individual value from parent node '%s'", getName()));
         }
 
         @Override
@@ -143,7 +145,6 @@ public abstract class Dict {
         public boolean isLeaf() {
             return false;
         }
-
     }
 
     static class Leaf extends Dict {
@@ -175,11 +176,5 @@ public abstract class Dict {
         public boolean isLeaf() {
             return true;
         }
-
     }
-
-    enum Names {
-        ENO, LAG, AY, SHH
-    };
-
 }
