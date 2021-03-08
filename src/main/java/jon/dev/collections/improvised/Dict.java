@@ -10,6 +10,7 @@ import java.util.function.Consumer;
 /**
  * Inspired by dict collection from python language. This attempts to provide
  * shorthand functions for ease in use.
+ *
  * @author Jonathan Lastrilla
  * @since 0.1
  */
@@ -117,13 +118,26 @@ public abstract class Dict {
         @Override
         public Dict add(Object name, Object value) {
             Dict newLeaf = Dict.newLeaf(name, value);
+            long existing = children.stream()
+                    .filter(d -> d.getName().equals(name))
+                    .count();
+            if (existing > 0) {
+                throw new IllegalArgumentException(String.format("Duplicate name %s!", name));
+            }
             this.children.add(newLeaf);
             return newLeaf;
         }
 
         @Override
         public Dict add(Object name) {
+            long existingParent = children.stream()
+                    .filter(p -> p.getName().equals(name))
+                    .count();
+            if (existingParent > 0) {
+                throw new IllegalArgumentException(String.format("Duplicate name %s!", name));
+            }
             Dict newParent = Dict.newSubParent(name);
+
             this.children.add(newParent);
             return newParent;
         }

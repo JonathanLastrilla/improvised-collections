@@ -74,12 +74,45 @@ public class DictTest extends TestCase {
         IntStream.range(1, 100)
                 .forEach(ignored -> {
                     root.get(subName)
-                            .add("test", r.nextFloat());
+                            .add("test" + r.nextInt(), r.nextFloat());
                 });
-        
+
         root.get(subName)
                 .forEach(ignored -> c.count());
         assertEquals(String.format("expected children of %s is 100", subName), 100, c.getI());
+    }
+
+    /**
+     * fixes issue #2
+     */
+    public void testDuplicateChildren() {
+        Dict root = Dict.createNew();
+        final String sameKeyName = "key1";
+        root.add(sameKeyName, 1);
+
+        Function<Dict, Boolean> trueIfErrorOccured = (d) -> {
+            try {
+                d.add(sameKeyName, 1);
+                return false;
+            } catch (Exception e) {
+                return true;
+            }
+        };
+
+        assertTrue("Adding duplicate key should throw error", trueIfErrorOccured.apply(root));
+
+        String sameParentName = "parent";
+        root.add(sameParentName);
+
+        Function<Dict, Boolean> trueIfDuplicateParent = (d) -> {
+            try {
+                d.add(sameParentName);
+                return false;
+            } catch (Exception e) {
+                return true;
+            }
+        };
+        assertTrue("Adding duplicate parent node should throw error", trueIfDuplicateParent.apply(root));
     }
 
     class Counter {
