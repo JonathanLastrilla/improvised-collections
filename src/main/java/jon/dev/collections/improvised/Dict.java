@@ -69,7 +69,7 @@ public abstract class Dict {
         return (T) get(names).getValue();
     }
 
-    protected abstract Object getValue();
+    public abstract Object getValue();
 
     static class Parent extends Dict {
 
@@ -91,7 +91,7 @@ public abstract class Dict {
         }
 
         @Override
-        protected Object getValue() {
+        public Object getValue() {
             throw new UnsupportedOperationException(String.format("unable to get individual value from parent node '%s'", getName()));
         }
 
@@ -177,7 +177,7 @@ public abstract class Dict {
         }
 
         @Override
-        protected Object getValue() {
+        public Object getValue() {
             return value;
         }
 

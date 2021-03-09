@@ -115,6 +115,22 @@ public class DictTest extends TestCase {
         assertTrue("Adding duplicate parent node should throw error", trueIfDuplicateParent.apply(root));
     }
 
+    public void testLeaf() {
+        Dict root = Dict.createNew();
+        String sameName = "test";
+        root.add(sameName, "1");
+
+        Function<Dict, Boolean> trueIfNoExceptionThrown = (d) -> {
+            try {
+                Object value = d.get(sameName).getValue();
+                return value.equals("1");
+            } catch (Exception e) {
+                return false;
+            }
+        };
+        assertTrue("there should be no error when getting value from leaf node", trueIfNoExceptionThrown.apply(root));
+    }
+
     class Counter {
 
         int i;
